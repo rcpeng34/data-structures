@@ -1,21 +1,21 @@
 var Queue = function() {
-  this.length = 0;
-  this.storage = {};
+  this._size = 0;
+  this._storage = {};
 };
 
 Queue.prototype.enqueue = function(value) {
-  this.storage[this.length] = value;
-  this.length++;
+  this._storage[this._size] = value;
+  this._size++;
 };
 Queue.prototype.dequeue = function() {
-  var result = this.storage[0];
-  for (var i = 1; i < this.length; i ++) {
-    this.storage[i-1] = this.storage [i];
+  var result = this._storage[0];
+  for (var i = 1; i < this._size; i ++) {
+    this._storage[i-1] = this._storage [i];
   }
-  delete this.storage[this.length];
-  this.length && this.length--;
+  delete this._storage[this._size];
+  this._size && this._size--;
   return result;
 };
 Queue.prototype.size = function() {
-  return this.length;
+  return this._size;
 };

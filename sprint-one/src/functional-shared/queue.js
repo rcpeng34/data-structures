@@ -6,26 +6,26 @@ var extend = function(to, from) {
 
 var queueMethods = {};
 queueMethods.enqueue = function(value) {
-  this.storage[this.length] = value;
-  this.length++;
+  this._storage[this._size] = value;
+  this._size++;
 };
 queueMethods.dequeue = function() {
-  var result = this.storage[0];
-  for (var i = 1; i < this.length; i ++) {
-    this.storage[i-1] = this.storage [i];
+  var result = this._storage[0];
+  for (var i = 1; i < this._size; i ++) {
+    this._storage[i-1] = this._storage [i];
   }
-  delete this.storage[this.length];
-  this.length && this.length--;
+  delete this._storage[this._size];
+  this._size && this._size--;
   return result;
 };
 queueMethods.size = function() {
-  return this.length;
+  return this._size;
 };
 
 var makeQueue = function(){
   var instance = {};
-  instance.storage = {};
-  instance.length = 0;
+  instance._storage = {};
+  instance._size = 0;
   extend(instance, queueMethods);
   return instance;
 };

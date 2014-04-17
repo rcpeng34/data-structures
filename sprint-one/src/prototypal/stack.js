@@ -5,20 +5,20 @@ var makeStack = function() {
 
 var stackMethods = {
   push: function(value){
-    this.storage[this.currentsize] = value;
-    this.currentsize++;
+    this._storage[this._size] = value;
+    this._size++;
   },
   pop: function(){
-    var storage = this.storage;
-    var size = this.currentsize;
+    var storage = this._storage;
+    var size = this._size;
     var result = storage[size - 1];
     delete storage[size - 1];
-    this.currentsize && this.currentsize--;
+    this._size && this._size--;
     return result;
   },
   size: function(){
-    return this.currentsize;
+    return this._size;
   },
-  currentsize: 0,
-  storage: {}
+  _size: 0,
+  _storage: {}
 };
