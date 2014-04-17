@@ -5,7 +5,10 @@ var HashTable = function(){
 
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  this._storage.set(i, v);
+  if (!Array.isArray(this._storage.get(k))) {
+  	this._storage.set(k, []);
+  }
+  this._storage.get(k).push(v);
 };
 
 HashTable.prototype.retrieve = function(k){

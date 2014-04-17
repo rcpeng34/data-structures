@@ -1,3 +1,5 @@
+// spec expects you to extend tree in the binary tree
+
 var extend = function(to, from) {
 	for (var key in from) {
 		to[key] = from[key];
