@@ -12,11 +12,11 @@ var makeBinarySearchTree = function(value){
 		left: null,
 		right: null
 	};
-	extend(newTree, treeMethods);
+	extend(newTree, bstMethods);
 	return newTree;
 };
 
-var treeMethods = {};
+var bstMethods = {};
 
-treeMethods.insert = function (value) {
+bstMethods.insert = function (value) {
 } 
