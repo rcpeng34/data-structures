@@ -44,4 +44,22 @@ describe("tree", function() {
     assert.isTrue(tree.contains(8));
   });
 
+  it("should have parent values", function () {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    expect(tree.children[0].children[0].parent.value).to.equal(5);
+  });
+
+  it("should remove parents", function () {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    var childTree = tree.children[0];
+    tree.children[0].removeFromParent();
+    assert.isTrue(!tree.contains(7));
+    assert.isTrue(childTree.parent === null);
+  });
 });
