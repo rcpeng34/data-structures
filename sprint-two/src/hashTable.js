@@ -8,15 +8,19 @@ HashTable.prototype.insert = function(k, v){
 
   //check if there is an array at the index, if not create one
   if(!Array.isArray(this._storage.get(i))) {
-    this._storage.set(i, [])
+    this._storage.set(i, []);
   }
 
   //now we know there is an array, get it and push to it
   this._storage.get(i).push([k, v]);
+  // resize the hash table if it's too full
+  if(this.size > 75) {
+    this = this.sizeUp();
+  }
 };
 
 HashTable.prototype.retrieve = function(k){
-  var i = getIndexBelowMaxForKey(k, this._limit)
+  var i = getIndexBelowMaxForKey(k, this._limit);
 
   //get the array at the index
   var storageArray = this._storage.get(i);
@@ -43,5 +47,42 @@ HashTable.prototype.remove = function(k){
       break;
     }
   }
+  // resize the hash table if it's too small
+  if(this.size > 25) {
+    this = this.sizeDown();
+  }
 };
 
+HashTable.prototype.size = function(){
+  // check to see how many of the indices are full
+  var count = 0;
+
+  this._storage.each(function(value) {
+    if(Array.isArray(value)) {count++;}
+  });
+
+  return (count * 100) / this._limit;
+};
+
+HashTable.prototype.sizeDown = function(){
+  //change the size of _limit
+  //return the
+};
+
+HashTable.prototype.sizeUp = function(){
+  var doubledStorage;
+  //change the size of _limit
+  this._limit = 2 * this._limit;
+  //create a new storage unit with double the limit
+  doubledStorage = makeLimitedArray(this._limit);
+  //loop through the current storage and rehash it into doubledStorage
+  this._storage.each(function(value){
+    for (var j = 0; j < value.length; j++) {
+      if (value[j] !== null) {
+        doubledStorage.insert(value[j][0], value[j][1]);
+      }
+    }
+  });
+  //return doubledStorage
+  return doubleStorage;
+};
