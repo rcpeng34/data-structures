@@ -16,14 +16,14 @@ var makeBinarySearchTree = function(value){
 var bstMethods = {};
 
 bstMethods.insert = function(value) {
-  if(value > this.value) {
-    if(this.right === null) {
+  if (value > this.value) {
+    if (!this.right) {
       this.right = makeBinarySearchTree(value);
     } else {
       this.right.insert(value);
     }
   } else {
-    if(this.left === null) {
+    if (!this.left) {
       this.left = makeBinarySearchTree(value);
     } else {
       this.left.insert(value);
