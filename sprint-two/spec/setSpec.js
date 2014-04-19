@@ -27,4 +27,12 @@ describe("set", function() {
     assert.isFalse(set.contains('Mel Gibson'));
   });
 
+  it("should test all objects", function(){
+    set.add({a: 1});
+    assert.isTrue(set.contains({a: 1}));
+    set.remove({a: 1});
+    assert.isFalse(set.contains('Mel Gibson'));
+    assert.isFalse(set.contains({a: 1}));
+  });
+
 });
