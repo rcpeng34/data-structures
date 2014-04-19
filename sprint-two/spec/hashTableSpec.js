@@ -27,6 +27,7 @@ describe("hashTable", function() {
 
   it("should not contain values that were removed", function() {
     hashTable.insert("Steven", "Tyler");
+    hashTable.insert('Steven', 'asdf');
     hashTable.remove("Steven");
     expect(hashTable.retrieve("Steven")).to.equal(null);
   });
@@ -61,5 +62,14 @@ describe("hashTable", function() {
     hashTable.remove("John");
     hashTable.remove("Mr.");
     expect(hashTable._limit).to.equal(8);
+  });
+
+  it("should overwrite existing values", function() {
+    for (var i = 0; i < people.length; i++){
+      var firstName = people[i][0], lastName = people[i][1];
+      hashTable.insert(firstName,lastName);
+    }
+    hashTable.insert("Dr.", "Rain");
+    expect(hashTable.retrieve("Dr.")).to.equal("Rain");
   });
 });

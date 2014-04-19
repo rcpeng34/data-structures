@@ -1,6 +1,26 @@
 var HashTable = function(){
+  this._count = 0;
   this._limit = 8;
   this._storage = makeLimitedArray(this._limit);
+};
+
+HashTable.prototype.retrieve = function(k){
+  var i = getIndexBelowMaxForKey(k, this._limit);
+
+  //get the array at the index
+  var bucket = this._storage.get(i);
+
+  //traverse the array to find the key
+  //j the value in the tuple
+  if (bucket) {
+    for(var j = 0; j < bucket.length; j++) {
+      if(bucket[j][0] === k) {
+        return bucket[j][1];
+      }
+    }
+  }
+  // oh no! we never found anything so return empty
+  return null;
 };
 
 HashTable.prototype.insert = function(k, v){
@@ -10,60 +30,75 @@ HashTable.prototype.insert = function(k, v){
   if(!Array.isArray(this._storage.get(i))) {
     this._storage.set(i, []);
   }
+  var overwritten = false;
 
-  //now we know there is an array, get it and push to it
-  this._storage.get(i).push([k, v]);
-  console.log("size = " + this.size() + " | limit = " + this._limit);
-  // resize the hash table if it's too full
-  if(this.size() >= 75) {
-    this._storage = this.sizeUp();
-  }
-};
-
-HashTable.prototype.retrieve = function(k){
-  var i = getIndexBelowMaxForKey(k, this._limit);
-
-  //get the array at the index
-  var storageArray = this._storage.get(i);
-
-  //traverse the array to find the key
-  //return the value in the tuple
-  for(var tuple = 0; tuple < storageArray.length; tuple++) {
-    if(storageArray[tuple][0] === k) {
-      return storageArray[tuple][1];
+  for (var j = 0; j < this._storage.get(i).length; j++) {
+    var tuple = this._storage.get(i)[j];
+    if(tuple[0] === k) {
+      overwritten = true;
+      tuple[1] = v;
     }
   }
-  // oh no! we never found anything so return empty
-  return null;
+
+  //now we know there is an array, get it and push to it
+  if (!overwritten) {
+    this._storage.get(i).push([k, v]);
+    this._count++;
+  }
+  // check if we need to resize
+  if (this._count / this._limit >= 0.75) {
+    this.reSize(this._limit * 2);
+  }
+
 };
 
 HashTable.prototype.remove = function(k){
-  //find the array
   var i = getIndexBelowMaxForKey(k, this._limit);
-  var storageArray = this._storage.get(i);
+
+  var bucket = this._storage.get(i);
   //remove the element using splice on the array
-  for (var tuple = 0; tuple < storageArray.length; tuple++) {
-    if (storageArray[tuple][0] === k) {
-      storageArray.splice(tuple, 1);
-      break;
+
+  if (bucket) {
+    for (var j = 0; j < bucket.length; j++) {
+      if (bucket[j][0] === k) {
+        bucket.splice(j, 1);
+        this._count--;
+        break;
+      }
     }
   }
-  // resize the hash table if it's too small
-  if(this.size() <= 25) {
-    this._storage = this.sizeDown();
+  // check if we need to resize
+  if (this._count / this._limit < 0.25) {
+    this.reSize(this._limit * 0.50);
   }
 };
 
-HashTable.prototype.size = function(){
-  // check to see how many of the indices are full
-  var count = 0;
+HashTable.prototype.reSize = function (newLimit) {
 
-  this._storage.each(function(value) {
-    if(Array.isArray(value)) {count++;}
+  this._limit = newLimit;
+  var oldStorage = this._storage;
+  this._storage = makeLimitedArray(this._limit);
+  this._count = 0;
+  var hash = this;
+  oldStorage.each(function(bucket){
+    if (bucket) {
+      for (var j = 0; j < bucket.length; j++) {
+        hash.insert(bucket[j][0], bucket[j][1]);
+      }
+    }
   });
-  console.log("count = " + count);
-  return (count * 100) / this._limit;
+
 };
+
+// HashTable.prototype.size = function(){
+//   // check to see how many of the indices are full
+//   var count = 0;
+
+//   this._storage.each(function(value) {
+//     if(Array.isArray(value)) {count++;}
+//   });
+//   return (count * 100) / this._limit;
+// };
 
 // HashTable.prototype.sizeDown = function(){
 //   var doubledStorage;
