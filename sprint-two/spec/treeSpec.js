@@ -62,4 +62,12 @@ describe("tree", function() {
     assert.isTrue(!tree.contains(7));
     assert.isTrue(childTree.parent === null);
   });
+
+  it("should apply a function on each element in the tree", function () {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    tree.traverse(function(value){console.log(value);});
+  });
 });

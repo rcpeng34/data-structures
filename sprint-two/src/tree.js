@@ -53,3 +53,14 @@ treeMethods.contains = function(target){
   return result;
 
 };
+
+//Extra credit
+treeMethods.traverse = function (func) {
+  func(this.value);
+
+  if (this.children.length !== 0) {
+    for (var i = 0; i < this.children.length; i++) {
+      this.children[i].traverse(func);
+    }
+  }
+};
