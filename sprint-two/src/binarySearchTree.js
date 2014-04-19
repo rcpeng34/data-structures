@@ -61,3 +61,24 @@ bstMethods.depthFirstLog = function(func) {
     this.right.depthFirstLog(func);
   }
 };
+
+bstMethods.breadthFirstLog = function(func) {
+  var queue = [];
+  queue.push(this);
+  this.breadthHelper(func, queue);
+};
+
+bstMethods.breadthHelper = function (func, queue) {
+  var removedNode = queue.shift();
+  func(removedNode.value);
+  if (removedNode.left) {
+    queue.push(removedNode.left);
+  }
+  if (removedNode.right) {
+    queue.push(removedNode.right);
+  }
+  if (queue.length) {
+    queue[0].breadthHelper(func, queue);
+  }
+};
+
