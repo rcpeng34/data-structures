@@ -54,4 +54,19 @@ describe("binarySearchTree", function() {
     expect(JSON.stringify(array)).to.equal(JSON.stringify([5,2,6,1,3,4]));
   });
 
+  it("should know its own depth", function() {
+    binarySearchTree.insert(12);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(11);
+    binarySearchTree.insert(14);
+    binarySearchTree.insert(16);
+    binarySearchTree.insert(9);
+    binarySearchTree.insert(13);
+    binarySearchTree.insert(20);
+    console.log(binarySearchTree.right.right.right.value);
+    console.dir(binarySearchTree);
+    expect(binarySearchTree.right.right.depth).to.equal(2);
+
+  });
+
 });
