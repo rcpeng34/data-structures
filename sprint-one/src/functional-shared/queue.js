@@ -11,10 +11,13 @@ queueMethods.enqueue = function(value) {
 };
 queueMethods.dequeue = function() {
   var result = this._storage[0];
+  // shift everything forward
   for (var i = 1; i < this._size; i ++) {
     this._storage[i-1] = this._storage [i];
   }
+  // delete the last element
   delete this._storage[this._size];
+  // if size is still > 0, decrement
   this._size && this._size--;
   return result;
 };

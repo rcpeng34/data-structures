@@ -19,6 +19,7 @@ var treeMethods = {};
 treeMethods.removeFromParent = function() {
   if (this.parent !== undefined) {
     for (var i = 0; i < this.parent.children.length; i++) {
+      // find this in the parent's children array and remove it
       if (this.parent.children[i].value === this.value) {
         this.parent.children.splice(i,1);
         break;
@@ -33,28 +34,23 @@ treeMethods.addChild = function(value){
 };
 
 treeMethods.contains = function(target){
-
   var result = false;
-
   if (this.value === target) {
     return true;
   }
-
   if (this.children.length !== 0) {
     for (var i = 0; i < this.children.length; i++) {
       if(!result) {
+        //recurse through all children
         result = this.children[i].contains(target);
       } else {
         break;
       }
     }
   }
-
   return result;
-
 };
 
-//Extra credit
 treeMethods.traverse = function (func) {
   func(this.value);
 

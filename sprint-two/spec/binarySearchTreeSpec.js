@@ -63,8 +63,6 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(9);
     binarySearchTree.insert(13);
     binarySearchTree.insert(20);
-    console.log(binarySearchTree.right.right.right.value);
-    console.dir(binarySearchTree);
     expect(binarySearchTree.right.right.depth).to.equal(2);
 
   });

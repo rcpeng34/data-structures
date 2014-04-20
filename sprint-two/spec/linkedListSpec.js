@@ -30,9 +30,7 @@ describe("linkedList", function() {
     linkedList.addToTail(4);
     linkedList.addToTail(5);
     expect(linkedList.head.value).to.equal(4);
-    console.log(linkedList)
     linkedList.removeHead();
-        console.log(linkedList) 
     expect(linkedList.head.value).to.equal(5);
   });
 
@@ -50,6 +48,4 @@ describe("linkedList", function() {
     linkedList.removeHead();
     assert.isFalse(linkedList.contains(4));
   });
-
-  // add more tests here to test the functionality of linkedList
 });

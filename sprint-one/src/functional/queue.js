@@ -5,8 +5,6 @@ var makeQueue = function(){
   var storage = {};
   var size = 0;
 
-  // Implement the methods below
-
   instance.enqueue = function(value){
     storage[size] = value;
     size++;
@@ -18,6 +16,7 @@ var makeQueue = function(){
       storage[i-1] = storage [i];
     }
     delete storage[size];
+    // check if size is > 0, if it is, decrement
     size && size--;
     return result;
   };

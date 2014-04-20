@@ -5,12 +5,10 @@ var extend = function(to, from) {
 };
 
 var makeStack = function() {
-  // Hey! Copy your code from src/functional/stack.js and paste it here
   var instance = {};
 
-  // Use an object with numeric keys to store values
   instance._storage = {};
-  instance._size = 0; // Hint: set an initial value here
+  instance._size = 0;
 
   extend(instance, stackMethods);
 
@@ -25,8 +23,11 @@ var stackMethods = {
   pop: function(){
     var storage = this._storage;
     var size = this._size;
+    // get last item
     var result = storage[size - 1];
+    // remove last item from the stack
     delete storage[size - 1];
+    // decrement as necessary
     this._size && this._size--;
     return result;
   },

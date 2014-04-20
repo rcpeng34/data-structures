@@ -41,7 +41,6 @@ describe("hashTable", function() {
     expect(hashTable.retrieve(v2)).to.equal(v2);
   });
 
-  // (Extra credit! Remove the extra 'x' when you want the following tests to run)
   it("should double in size when needed", function() {
     for (var i = 0; i < people.length; i++){
       var firstName = people[i][0], lastName = people[i][1];

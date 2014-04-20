@@ -10,10 +10,10 @@ HashTable.prototype.retrieve = function(k){
   //get the array at the index
   var bucket = this._storage.get(i);
 
-  //traverse the array to find the key
-  //j the value in the tuple
+  //traverse the array if nonempty to find the key
   if (bucket) {
     for(var j = 0; j < bucket.length; j++) {
+      // if the key in the tuple matches, return the value
       if(bucket[j][0] === k) {
         return bucket[j][1];
       }
@@ -30,17 +30,19 @@ HashTable.prototype.insert = function(k, v){
   if(!Array.isArray(this._storage.get(i))) {
     this._storage.set(i, []);
   }
+  // by default set overwritten to false, then check if this key exists
+  // if it does, overwritten will be set to true later
   var overwritten = false;
 
   for (var j = 0; j < this._storage.get(i).length; j++) {
     var tuple = this._storage.get(i)[j];
+    // if the key matches, flip overwritten to true and set the value to the new value
     if(tuple[0] === k) {
       overwritten = true;
       tuple[1] = v;
     }
   }
-
-  //now we know there is an array, get it and push to it
+  // if we found a matching key, don't push the new value otherwise add a tuple
   if (!overwritten) {
     this._storage.get(i).push([k, v]);
     this._count++;
@@ -49,18 +51,18 @@ HashTable.prototype.insert = function(k, v){
   if (this._count / this._limit >= 0.75) {
     this.reSize(this._limit * 2);
   }
-
 };
 
 HashTable.prototype.remove = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
 
   var bucket = this._storage.get(i);
-  //remove the element using splice on the array
 
   if (bucket) {
     for (var j = 0; j < bucket.length; j++) {
+    // check to see if the value is in the bucket
       if (bucket[j][0] === k) {
+        // if it is, splice the tuple out of the bucket
         bucket.splice(j, 1);
         this._count--;
         break;
@@ -74,12 +76,15 @@ HashTable.prototype.remove = function(k){
 };
 
 HashTable.prototype.reSize = function (newLimit) {
-
+  // set the limit to the new size
   this._limit = newLimit;
+  // store the old set of values somewhere
   var oldStorage = this._storage;
+  // create a new empty storage
   this._storage = makeLimitedArray(this._limit);
   this._count = 0;
   var hash = this;
+  // take each item stored in oldStorage and rehash
   oldStorage.each(function(bucket){
     if (bucket) {
       for (var j = 0; j < bucket.length; j++) {
@@ -87,57 +92,4 @@ HashTable.prototype.reSize = function (newLimit) {
       }
     }
   });
-
 };
-
-// HashTable.prototype.size = function(){
-//   // check to see how many of the indices are full
-//   var count = 0;
-
-//   this._storage.each(function(value) {
-//     if(Array.isArray(value)) {count++;}
-//   });
-//   return (count * 100) / this._limit;
-// };
-
-// HashTable.prototype.sizeDown = function(){
-//   var doubledStorage;
-//   //change the size of _limit
-//   this._limit = this._limit / 2;
-//   //create a new storage unit with double the limit
-//   doubledStorage = makeLimitedArray(this._limit);
-//   //loop through the current storage and rehash it into doubledStorage
-//   this._storage.each(function(value){
-//     if (value) {
-//       for (var j = 0; j < value.length; j++) {
-//         if (value[j] !== null) {
-//           var key = getIndexBelowMaxForKey(value[j][0], this._limit);
-//           doubledStorage.set(key , [value[j][0], value[j][1]]);
-//         }
-//       }
-//     }
-//   });
-//   //return doubledStorage
-//   return doubledStorage;
-// };
-
-// HashTable.prototype.reHash = function(multiplier){
-//   var doubledStorage;
-//   //change the size of _limit
-//   this._limit = multiplier * this._limit;
-//   //create a new storage unit with double the limit
-//   doubledStorage = makeLimitedArray(this._limit);
-//   //loop through the current storage and rehash it into doubledStorage
-//   this._storage.each(function(value){
-//     if (value) {
-//       for (var j = 0; j < value.length; j++) {
-//         if (value[j] !== null) {
-//           var key = getIndexBelowMaxForKey(value[j][0], this._limit);
-//           doubledStorage.set(key , [value[j][0], value[j][1]]);
-//         }
-//       }
-//     }
-//   });
-//   //return doubledStorage
-//   return doubledStorage;
-// };
